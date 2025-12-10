@@ -1,31 +1,38 @@
-# 🚚 Transport SaaS — Analyse automatisée des trajets de transport
+🚚 Transport SaaS — Analyse automatisée des trajets de transport
+🔎 Présentation du projet
 
-Ce projet est un **MVP (Minimum Viable Product)** d'une solution SaaS conçue pour les **acteurs du transport routier** souhaitant mieux comprendre la **rentabilité de leurs trajets**.
+Ce projet est un MVP (Minimum Viable Product) d'une solution SaaS destinée aux transporteurs routiers, exploitants et TPE/PME du secteur logistique.
 
-🎯 **Objectif du MVP :**
-> Offrir une API simple et automatisée permettant aux transporteurs de :
-> - Calculer les distances entre villes
-> - Estimer les coûts logistiques en €/km
-> - Identifier la **marge dégagée sur chaque trajet**
-> - Accéder à une synthèse claire du chiffre d'affaires et de la rentabilité
+L’objectif : fournir un outil simple et automatisé permettant d’analyser la rentabilité des trajets à partir de leurs données de transport.
 
-💡 Ce MVP répond à un **besoin concret métier** : aider les exploitants à piloter leur activité à partir des données terrain.  
-Il peut être connecté à un outil de BI (ex: Power BI) ou enrichi pour devenir une application complète.
+Grâce à l’API, il est possible de :
 
----
+calculer automatiquement les distances entre deux villes
 
-## 🔍 Fonctionnalités
+estimer les coûts logistiques
 
-### 📦 Endpoint `/trajets`
+déterminer la marge dégagée
+
+suivre les indicateurs clés (CA, distance totale, coût/km, marge totale)
+
+connecter les résultats à Power BI pour un dashboard professionnel
+
+Ce MVP sert de base pour développer une plateforme SaaS complète.
+
+🚀 Fonctionnalités principales
+📦 Endpoint : /trajets
 
 Retourne l’ensemble des trajets avec :
-- Distance calculée entre départ et arrivée (à vol d’oiseau)
-- Coût par kilomètre
-- Marge estimée selon un coût logistique moyen (0,45€/tonne/km)
 
-👉 Exemple de sortie :
+Distance calculée (géocodage + haversine)
 
-```json
+Coût par kilomètre
+
+Marge estimée
+
+Chiffres clés du transport (CA, tonnage, prix HT…)
+
+💡 Exemple de réponse JSON
 [
   {
     "Exp.Date": "2025-11-01",
@@ -37,6 +44,97 @@ Retourne l’ensemble des trajets avec :
     "Distance (km)": 210.45,
     "€/km": 4.04,
     "Marge estimée (€)": 726.72
-  },
-  ...
+  }
 ]
+
+🧠 Logique métier
+
+Voici les règles métier intégrées dans le calcul :
+
+Distance (km) = formule haversine
+
+Coût logistique (€) = poids (tonnes) × distance × 0.45 €/km/tonne
+
+Prix au km (€ / km) = montant HT / distance
+
+Marge = montant HT – coût logistique estimé
+
+Géocodage des villes avec geopy
+
+Pipeline Python automatisé pour enrichir les colonnes manquantes
+
+🧰 Technologies utilisées
+Backend
+
+FastAPI
+
+Pydantic
+
+Python (pandas, geopy, haversine)
+
+Data Engineering
+
+Nettoyage et enrichissement du DataFrame
+
+Calculs automatisés
+
+Préparation pour dashboard Power BI
+
+Infrastructure
+
+API REST
+
+Architecture prête pour futur déploiement (Docker / Azure / AWS)
+
+
+📊 Intégration Power BI
+
+L’API peut s'intégrer directement dans Power BI grâce à une requête Web.
+Cela permet de produire un dashboard contenant :
+
+Distance totale parcourue
+
+Coût total des trajets
+
+Marge globale
+
+Top destinations
+
+Carte interactive des trajets
+
+Evolution mensuelle des marges
+
+
+🛣️ Roadmap (évolution future du SaaS)
+Phase 2 : amélioration
+
+✔ Géocodage plus précis (Google Maps API)
+
+✔ Gestion des temps de trajet
+
+✔ Coût carburant dynamique (API carburant)
+
+Phase 3 : Dashboard & produit SaaS
+
+Interface web (Streamlit / React)
+
+Authentification utilisateur
+
+Multi-entreprises
+
+Export PDF intégré
+
+Connexion automatique à des TMS
+
+🛡️ Sécurité & bonnes pratiques
+
+Aucun fichier CSV sensible n’est stocké dans le dépôt
+
+.gitignore protège les données du transporteur
+
+API sécurisable via token ou OAuth2
+
+👤 Auteur
+
+Développé par Yass893
+Passionné par l’automatisation & les solutions SaaS transport.
